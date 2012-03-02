@@ -18,17 +18,26 @@ package
 			socket.addEventListener(Event.CONNECT, onConnect);
 		}
 		
+		public function send (data:Object):void
+		{
+			socket.send(com.adobe.serialization.json.JSON.encode(data));
+		}
+		
+		
+		private function debug():void
+		{
+			// create a room
+			this.send({
+				c: 'createRoom',
+				name: 'The most awesome room ever'
+			});
+		}
+		
 		protected function onConnect(event:Event):void
 		{
-			var o:Object = {
-				name: "James and Rico's Gambling room",
-				c: 'createRoom'
-			};
-			
-			var jsonString:String = com.adobe.serialization.json.JSON.encode(o);
-			socket.send(jsonString);
-			
+			this.debug();
 		}
+		
 		protected function onData(event:DataEvent):void
 		{
 			var json:Object = com.adobe.serialization.json.JSON.decode(event.data);
